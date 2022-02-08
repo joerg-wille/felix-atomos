@@ -166,43 +166,47 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.graalvm.nativeimage</groupId>
-                <artifactId>native-image-maven-plugin</artifactId>
-                <version>21.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>native-image</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <imageName>atomos</imageName>
-                    <mainClass>org.apache.felix.atomos.Atomos</mainClass>
-                    <buildArgs>
-                        --no-server
-                        --allow-incomplete-classpath
-                        --no-fallback
-                        --initialize-at-build-time=org.eclipse.jetty.util.TypeUtil
-                        --initialize-at-build-time=org.eclipse.jetty.http.HttpTokens
-                        --initialize-at-build-time=org.eclipse.jetty.util.log.Log
-                        --initialize-at-build-time=org.eclipse.jetty.util.log.StdErrLog
-                        --initialize-at-build-time=org.eclipse.jetty.util.Uptime
-                        --initialize-at-build-time=org.eclipse.jetty.server.HttpOutput
-                        --initialize-at-build-time=org.apache.felix.atomos
-                        --initialize-at-build-time=javax.servlet
-                        --initialize-at-build-time=org.apache.felix.service.command.Converter
-                        -H:ReflectionConfigurationFiles=${project.basedir}/graal_class_config.json
-                        -H:ResourceConfigurationFiles=${project.basedir}/graal_resource_config.json
-                        -H:DynamicProxyConfigurationFiles=${project.basedir}/graal_proxy_config.json
-                        -H:+ReportUnsupportedElementsAtRuntime
-                        -H:+ReportExceptionStackTraces
-                        -H:+PrintClassInitialization
-                    </buildArgs>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.graalvm.buildtools</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+				<version>0.9.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<imageName>atomos</imageName>
+					<mainClass>org.apache.felix.atomos.Atomos</mainClass>
+					<buildArgs>
+						<buildArg>--no-server</buildArg>
+						<buildArg>--allow-incomplete-classpath</buildArg>
+						<buildArg>--no-fallback</buildArg>
+						<!-- <buildArg>initialize-at-build-time=org.eclipse.jetty.util.TypeUtil</buildArg> -->
+ 			            <!-- <buildArg>initialize-at-build-time=org.eclipse.jetty.http.HttpTokens</buildArg> -->
+						<buildArg>--initialize-at-build-time=org.eclipse.jetty.util.log.Log</buildArg>
+						<buildArg>--initialize-at-build-time=org.eclipse.jetty.util.log.StdErrLog</buildArg>
+						<buildArg>--initialize-at-build-time=org.eclipse.jetty.util.Uptime</buildArg>
+						<buildArg>--initialize-at-build-time=org.eclipse.jetty.server.HttpOutput</buildArg>
+						<buildArg>--initialize-at-build-time=org.apache.felix.atomos</buildArg>
+						<buildArg>--initialize-at-build-time=javax.servlet</buildArg>
+						<buildArg>--initialize-at-build-time=org.apache.felix.service.command.Converter</buildArg>
+						<buildArg>-H:ReflectionConfigurationFiles=${project.basedir}/graal_class_config.json</buildArg>
+						<buildArg>-H:ResourceConfigurationFiles=${project.basedir}/graal_resource_config.json</buildArg>
+						<buildArg>-H:DynamicProxyConfigurationFiles=${project.basedir}/graal_proxy_config.json</buildArg>
+						<buildArg>-H:+ReportUnsupportedElementsAtRuntime</buildArg>
+						<buildArg>-H:+PrintClassInitialization</buildArg>
+						<buildArg>--native-image-info</buildArg>
+						<buildArg>--verbose</buildArg>
+						<buildArg>-H:IncludeResources=^META-INF/MANIFEST.MF$</buildArg>
+						<buildArg>-H:+ReportExceptionStackTraces</buildArg>
+						<buildArg>--trace-class-initialization=org.eclipse.jetty.util.ModuleLocation</buildArg>
+					</buildArgs>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 </project>
